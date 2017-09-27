@@ -11,6 +11,10 @@
         http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util.xsd 
         ">
+	<context:component-scan base-package="cn.xclick.web.restful.template.rest.crud">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+            
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
@@ -20,4 +24,5 @@
 		</property>
 	</bean>   
 	
+	<util:properties id="appSettings" location="classpath:app.properties" />
 </beans>	

@@ -16,12 +16,43 @@ FLUSH PRIVILEGES;
 use cruddb;
 
 CREATE TABLE IF NOT EXISTS `user` (
-  id   VARCHAR(100) NOT NULL,
-  name VARCHAR(200)
+  id   INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(200),
+  PRIMARY KEY (id)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci;
 
-ALTER TABLE `user` ADD PRIMARY KEY (id);
-
 ```
+
+
+## 测试
+### 1. 新增
+http://192.168.1.33:8080/restful-crud/users/create
+POST
+```json
+{
+	"name":"Bill"
+}
+```
+
+### 2. 更新
+http://192.168.1.33:8080/restful-crud/users/update/{id}
+POST
+```json
+{
+	"id":1,
+	"name":"Gates"
+}
+```
+### 3. 获取所有
+http://192.168.1.33:8080/restful-crud/users/list
+GET
+
+### 4. 获取某笔记录
+http://192.168.1.33:8080/restful-crud/users/get/{id}
+GET
+
+### 5. 删除
+DELETE
+http://192.168.1.33:8080/restful-crud/users/delete/{id}

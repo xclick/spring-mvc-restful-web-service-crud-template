@@ -1,13 +1,13 @@
 package cn.xclick.web.restful.template.rest.crud.model;
 
 public class User {
-	private String id ;
+	private int id ;
 	private String name ;
 	
-	public String getId(){
+	public int getId(){
 		return this.id;
 	}
-	public void setId(String id){
+	public void setId(int id){
 		this.id = id ;
 	}
 	public String getName(){
@@ -15,5 +15,13 @@ public class User {
 	}
 	public void setName(String name){
 		this.name = name ;
+	}
+	
+	public String toString(){
+		return "User:{" +
+				"id:" + id + 
+				", name:" + name +
+				"}";
+				
 	}
 }
