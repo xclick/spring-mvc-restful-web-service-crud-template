@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xclick.bestsudokuserver.dao.UserDao">
+	<resultMap type="User" id="userResult">
+		<id column="id" property="id"/>
+		<result column="id" property="id"/>
+		<result column="username" property="userName"/>
+		<result column="password" property="password"/>
+		<result column="firstname" property="firstName"/>
+		<result column="lastname" property="lastName"/>		
+		<result column="nickname" property="nickName"/>
+		<result column="status" property="status"/>
+		<result column="email1" property="email1"/>
+		<result column="email2" property="email2"/>
+		<result column="email3" property="email3"/>
+		<result column="phone1" property="phone1"/>
+		<result column="phone2" property="phone2"/>
+		<result column="phone3" property="phone3"/>
+		<result column="deviceuid" property="deviceUid"/>
+		<result column="platform" property="platform"/>
+		<result column="os" property="os"/>
+		<result column="osversion" property="osVersion"/>
+		<result column="appversion" property="appVersion"/>
+		<result column="create_time" property="createTime"/>
+		<result column="edit_time" property="editTime"/>
+	</resultMap>
+	<resultMap type="UserLogin" id="userLoginResult">
+		<id column="token" property="token"/>
+		<result column="token" property="token"/>
+		<result column="userid" property="userId"/>
+		<result column="fromip" property="fromIp"/>
+		<result column="logintime" property="loginTime"/>
+		<result column="logouttime" property="logoutTime"/>
+		<result column="lastactivetime" property="lastActiveTime"/>
+		<result column="expiretime" property="expireTime"/>
+		<result column="active" property="active"/>
+	</resultMap>
+	<resultMap type="UserSuggestion" id="userSuggestionResult">
+		<id column="id" property="id"/>
+		<result column="id" property="id"/>
+		<result column="userid" property="userId"/>
+		<result column="suggestion" property="suggestion"/>
+		<result column="confirm" property="confirm"/>
+		<result column="create_time" property="createTime"/>
+		<result column="edit_time" property="editTime"/>
+		<result column="user_nickname" property="userNickname"/>
+	</resultMap>
+    <!-- createUser -->
+    <insert id="createUser" parameterType="cn.xclick.bestsudokuserver.model.User"
+    	useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `user`
+			(username, password, firstname, lastname, nickname, deviceuid, 
+				platform, os, osversion, appversion, create_time, edit_time,
+				`status`, email1, email2, email3, phone1, phone2, phone3)
+			VALUES
+			(#{userName}, #{password}, #{firstName}, #{lastName}, #{nickName}, #{deviceUid}, 
+				#{platform}, #{os}, #{osVersion}, #{appVersion}, #{createTime}, #{editTime},
+				#{status}, #{email1}, #{email2}, #{email3}, #{phone1}, #{phone2}, #{phone3});
+	</insert>
+	<!-- createUserLogin -->
+	<insert id="createUserLogin" parameterType="cn.xclick.bestsudokuserver.model.UserLogin">
+    	INSERT INTO `userlogin`
+			(token, userid, fromip, logintime, lastactivetime, expiretime, active)
+			VALUES
+			(#{token}, #{userId}, #{fromIp}, #{loginTime}, #{lastActiveTime}, #{expireTime}, #{active});	
+    </insert>
+    <!-- createUserLoginLog -->
+    <insert id="createUserLoginLog" parameterType="cn.xclick.bestsudokuserver.model.UserLoginLog">
+    	INSERT INTO `userlogin_log`
+    		(`userid`, `action`, fromip, `status`, actiontime, token, `data`)
+    		VALUES
+    		(#{userId}, #{action}, #{fromIp}, #{status}, #{actionTime}, #{token}, #{data});
+    </insert>
+    <!-- getUserById -->
+    <select id="getUserById" parameterType="Long" resultMap="userResult">
+		SELECT * FROM `user` WHERE id = #{id};
+	</select>
+    <!-- getUserByDeviceUid -->
+    <select id="getUserByDeviceUid" parameterType="String" resultMap="userResult">
+		SELECT * FROM `user` WHERE deviceUid = #{deviceUid};
+	</select>
+    <!-- getNicknameSeqWithoutUse -->
+    <select id="getNicknameSeqWithoutUse" resultType="java.util.Map">
+    	SELECT id, seq  
+    		FROM `nickname_seq` 
+    		WHERE `used` != 'Y' 
+    		ORDER BY id 
+    		LIMIT 1;
+    </select>
+    <!-- updateNicknameSeqUsed -->
+    <update id="updateNicknameSeqUsed" parameterType="int">
+    	UPDATE `nickname_seq`
+    		SET `used` = 'Y'
+    		WHERE id = #{id} ; 
+    </update>
+    <!-- getUserLoginByToken -->
+    <select id="getUserLoginByToken" parameterType="String" resultMap="userLoginResult">
+    	SELECT * FROM `userlogin` 
+    		WHERE token = #{token};
+    </select>
+    <!-- getTotalUserList -->
+    <select id="getTotalUserList" resultMap="userResult">
+        select * from `user` order by id; 
+    </select>
+    <!-- createUseSuggestion -->
+    <insert id="createUseSuggestion" parameterType="cn.xclick.bestsudokuserver.model.UserSuggestion"
+    	useGeneratedKeys="true" keyProperty="id">
+    	INSERT INTO `user_suggestion`
+    		(`userid`, `suggestion`, create_time, `edit_time`)
+    		VALUES
+    		(#{userId}, #{suggestion}, #{createTime}, #{editTime});
+    </insert>
+    <!--  -->
+    <update id="updateUserNickname" parameterType="cn.xclick.bestsudokuserver.model.User">
+    	UPDATE `user`
+    		SET `nickname` = #{nickName}, edit_time = #{editTime} 
+    		WHERE id = #{id} ; 
+    </update>
+    <select id="getSuggestions" parameterType="Integer" resultMap="userSuggestionResult">
+    	SELECT us.id id, u.id userid, us.suggestion, us.confirm, us.create_time, us.edit_time, 
+    		u.nickname user_nickname 
+    		FROM `user_suggestion` us
+    		INNER JOIN `user` u on u.id = us.userid
+    		WHERE us.confirm = 'Y' and us.id > #{id}
+    		ORDER BY us.create_time 
+    		LIMIT 100 ; 
+    </select>
+</mapper>
+		
