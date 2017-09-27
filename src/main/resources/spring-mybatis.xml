@@ -29,12 +29,12 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
-        <property name="typeAliasesPackage" value="cn.xclick.bestsudokuserver.model"/>
+        <property name="typeAliasesPackage" value="cn.xclick.web.restful.template.rest.crud.model"/>
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
 	</bean>
 	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="cn.xclick.bestsudokuserver.dao"/>
+		<property name="basePackage" value="cn.xclick.web.restful.template.rest.crud.mapper"/>
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 	
@@ -43,5 +43,5 @@
     </bean>  
     <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
     
-    <context:component-scan base-package="cn.xclick.bestsudokuserver.service" /> 
+    <context:component-scan base-package="cn.xclick.web.restful.template.rest.crud.service" /> 
 </beans>        

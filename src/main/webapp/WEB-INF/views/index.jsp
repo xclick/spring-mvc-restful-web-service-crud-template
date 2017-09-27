@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Welcome BestSudoku Server Site</title>
+<title>spring-mvc-restful-web-service-crud-template</title>
 </head>
 <body>
-	<center><h1>Welcome BestSudoku Server Site</h1></center>
+	<center><h1>spring-mvc-restful-web-service-crud-template</h1></center>
 	<hr/>
-	<center><em>Copyright © 2017, Supper Game Software Foundation</em></center>
+	<center><em>Copyright © 2017, xclick.cn</em></center>
 </body>
 </html>

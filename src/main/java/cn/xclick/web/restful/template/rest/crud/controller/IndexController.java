@@ -1,4 +1,4 @@
-package cn.xclick.bestsudokuserver.controller;
+package cn.xclick.web.restful.template.rest.crud.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
